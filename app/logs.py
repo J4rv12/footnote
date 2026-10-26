@@ -1,0 +1,80 @@
+"""One log line = one JSON object. CLAUDE.md section 6.
+
+Stdlib `logging` plus a formatter, not structlog: the requirement is "every
+line parses as JSON and carries the same keys", which is a screenful of
+code, not a dependency.
+
+The fields every event must carry are keyword-only arguments to `log_event`,
+so forgetting one is a TypeError at the call site rather than a gap in the
+logs. Ported from SitRep with `alert_id` renamed to `request_id`.
+"""
+
+import json
+import logging
+
+_EVENT_FIELDS = ("request_id", "stage", "outcome", "latency_ms", "reason")
+
+
+class JsonFormatter(logging.Formatter):
+    """Render one record as one line of JSON."""
+
+    def format(self, record: logging.LogRecord) -> str:
+        entry: dict[str, object] = {"level": record.levelname, "msg": record.getMessage()}
+        for field in _EVENT_FIELDS:
+            if hasattr(record, field):
+                entry[field] = getattr(record, field)
+        if record.exc_info:
+            entry["exc"] = self.formatException(record.exc_info)
+        return json.dumps(entry, default=str)
+
+
+def configure_logging(level: str) -> None:
+    """Route every app log record to stderr as JSON.
+
+    Replaces the root logger's handlers rather than appending, so calling it
+    twice does not print every line twice. Raises `ValueError` on an unknown
+    level name — called from `main.py` at import, so a typo in LOG_LEVEL
+    fails the deploy instead of silently logging at the wrong level.
+    """
+    handler = logging.StreamHandler()
+    handler.setFormatter(JsonFormatter())
+    root = logging.getLogger()
+    root.handlers = [handler]
+    root.setLevel(level)
+    # httpx logs every request at INFO, and the anthropic SDK sends through
+    # httpx2, a separate package with its own logger. Neither line carries the
+    # event fields, so at INFO each question would add one line per Voyage and
+    # Claude call that no query over request_id can join to the rest.
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("httpx2").setLevel(logging.WARNING)
+
+
+def log_event(
+    logger: logging.Logger,
+    *,
+    request_id: str,
+    stage: str,
+    outcome: str,
+    latency_ms: float,
+    reason: str | None = None,
+    exc_info: bool = False,
+) -> None:
+    """Log one pipeline event. WARNING when it carries a reason code, else INFO.
+
+    `exc_info=True` attaches the exception being handled and raises the
+    level to ERROR. Only for the last-resort net in the `/ask` handler: an
+    expected failure has a reason code and needs no traceback, and a line
+    that says `internal_error` without one hides the bug it caught.
+    """
+    fields: dict[str, object] = {
+        "request_id": request_id,
+        "stage": stage,
+        "outcome": outcome,
+        "latency_ms": round(latency_ms, 1),
+    }
+    if reason is not None:
+        fields["reason"] = reason
+    level = logging.INFO if reason is None else logging.WARNING
+    if exc_info:
+        level = logging.ERROR
+    logger.log(level, "%s %s", stage, outcome, extra=fields, exc_info=exc_info)

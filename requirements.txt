@@ -1,0 +1,12 @@
+# Runtime dependencies. Seven, per CLAUDE.md section 4 — do not expand.
+# Pinned exactly: Render rebuilds on every push, and an unpinned transitive
+# bump is a deploy that breaks without a commit to blame it on.
+# The six shared with SitRep keep SitRep's pins. anthropic moves only in U16,
+# where Haiku 5.5's `effort` support has to be checked against the SDK anyway.
+anthropic==1.2.0
+fastapi==0.141.1
+httpx==0.28.1
+numpy==2.5.4
+pydantic==2.13.5
+pydantic-settings==2.15.0
+uvicorn==0.52.4
