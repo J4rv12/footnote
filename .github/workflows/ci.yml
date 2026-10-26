@@ -4,6 +4,12 @@ on:
   push:
   pull_request:
 
+# The repo setting already defaults the token to read; this keeps it so in
+# reviewed code, where a click in Settings cannot widen it. It limits what a
+# hijacked action can do with the token, not what it can read on the runner.
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
