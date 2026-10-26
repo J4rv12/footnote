@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      # v7 of both, not SitRep's v4/v5: those target Node 20, which GitHub has
+      # deprecated, and SitRep's runs already carry the warning.
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          # Reads .python-version, the same file Render reads. One place to
+          # bump the interpreter; CI and production cannot drift apart.
+          python-version-file: .python-version
+          cache: pip
+
+      # Render installs requirements.txt and nothing else. Install it alone
+      # first and import the app, which is what uvicorn does at boot. A
+      # runtime dependency misfiled into requirements-dev.txt fails here
+      # instead of on Render. Ordering alone would not catch it —
+      # requirements-dev.txt includes requirements.txt, so the dev install is
+      # a superset and pytest would import the misfiled package regardless.
+      - run: pip install -r requirements.txt
+
+      - name: app boots on runtime dependencies alone
+        env:
+          # get_settings() runs at import time and there is no .env here.
+          # conftest.py does not apply to a bare python -c.
+          ANTHROPIC_API_KEY: sk-ant-ci-smoke
+          VOYAGE_API_KEY: pa-ci-smoke
+        run: python -c "import app.main"
+
+      - run: pip install -r requirements-dev.txt
+
+      - run: ruff check .
+      - run: ruff format --check .
+
+      # No .env here, by design. conftest.py supplies the fake secrets, so a
+      # green CI run proves the app boots from environment alone.
+      - run: pytest
