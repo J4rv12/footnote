@@ -7,17 +7,17 @@ Planning file. Never indexed: the chunker reads `corpus/inter-mediate/` only.
 - Editions: 2025/26 and 2026/27. Only `code-of-conduct` and `matchday-ops` have both.
 - `is_current` rule: true if and only if the edition is 2026-27. No document exists only in 2025/26.
 - Section numbering across editions: a changed section keeps its number in both editions.
-- Target length: 8 files (6 documents, 2 of them in both editions) × ~1,900 words ≈ 15k.
+- Target length: 8 files (6 documents, 2 of them in both editions) ≈ 12.5k.
 
 ## Documents
 | Slug | Title | Editions | ~Words | Covers (one line) |
 |---|---|---|---|---|
-| code-of-conduct | Code of conduct | both | 1900 | punctuality; phones and devices; dress code; alcohol and curfew; fines schedule; disciplinary process and appeals |
-| matchday-ops | Matchday operations | both | 1900 | home reporting times; pre-match timeline; dressing-room rules; warm-up; team sheet and squad numbers; post-match duties; stadium access passes |
-| away-travel | Away travel | 2026/27 | 1900 | coach, train or flight; departure times and meeting points; hotel room allocation; reporting at away grounds; daily expenses |
-| training-ground-rules | Training ground rules | 2026/27 | 1900 | session timetable; parking and access; gym rules; physio room; visitors; pitch closures for weather |
-| set-piece-playbook | Set-piece playbook | 2026/27 | 1900 | attacking corners; defending corners; free kicks; throw-ins; penalties and takers; codenames and hand signals; marking assignments |
-| media-policy | Media policy | 2026/27 | 1900 | press conferences; post-match interviews; social media; club channels; embargoes; leaks and confidentiality |
+| code-of-conduct | Code of conduct | both | 1650 | punctuality; phones and devices; dress code; alcohol and curfew; fines schedule; disciplinary process and appeals |
+| matchday-ops | Matchday operations | both | 1550 | home reporting times; pre-match timeline; dressing-room rules; warm-up; team sheet and squad numbers; post-match duties; stadium access passes |
+| away-travel | Away travel | 2026/27 | 1630 | coach, train or flight; departure times and meeting points; hotel room allocation; reporting at away grounds; daily expenses |
+| training-ground-rules | Training ground rules | 2026/27 | 1480 | session timetable; parking and access; gym rules; physio room; visitors; pitch closures for weather |
+| set-piece-playbook | Set-piece playbook | 2026/27 | 1520 | attacking corners; defending corners; free kicks; throw-ins; penalties and takers; codenames and hand signals; marking assignments |
+| media-policy | Media policy | 2026/27 | 1440 | press conferences; post-match interviews; social media; club channels; embargoes; leaks and confidentiality |
 
 ## Traps
 
