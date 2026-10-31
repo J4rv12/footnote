@@ -45,6 +45,14 @@ class Settings(BaseSettings):
     voyage_model: str = "voyage-4"
     log_level: str = "INFO"
 
+    # --- Chunking (U06). Changing either changes every chunk, so the index
+    # manifest records both and `make index` must be rerun. ---
+    # Above the longest handbook section (116 words, measured in U06), so
+    # every section is exactly one chunk. gt=0 because 0 would split forever.
+    max_chunk_words: int = Field(default=200, gt=0)
+    # The edition whose chunks carry is_current=True (corpus/README.md).
+    current_edition: str = "2026-27"
+
 
 @lru_cache
 def get_settings() -> Settings:
