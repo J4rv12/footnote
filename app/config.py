@@ -45,6 +45,20 @@ class Settings(BaseSettings):
     voyage_model: str = "voyage-4"
     log_level: str = "INFO"
 
+    # --- Embeddings (U08). ---
+    voyage_base_url: str = "https://api.voyageai.com/v1"
+    # voyage-4 accepts 256, 512, 1024 (its default) or 2048; anything else is
+    # a 400 from Voyage, which `make index` reports. Changing it changes every
+    # vector, so the manifest records it and the index must be rebuilt.
+    # 1024 keeps the handbook index under 1 MB; U09 decides whether the
+    # largest eval corpus needs 512 to stay under the 20 MB limit.
+    voyage_output_dimension: int = Field(default=1024, gt=0)
+    # Measured in U08 from a laptop: one-question calls took 0.5 to 1.4 s, and
+    # the first call of the session 4.9 s. Twice the slowest. Past this, /ask
+    # is better served by keyword search than by waiting. U09 measures a full
+    # batch of chunks against it.
+    voyage_timeout_seconds: float = Field(default=10.0, gt=0)
+
     # --- Chunking (U06). Changing either changes every chunk, so the index
     # manifest records both and `make index` must be rerun. ---
     # Above the longest handbook section (116 words, measured in U06), so
