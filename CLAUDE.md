@@ -166,8 +166,8 @@ SitRep's keep-awake monitor already uses about 730. Sharing a workspace would le
 traffic take SitRep down. In its own workspace, Footnote's monitor uses about 730 of its 750.
 
 **Cold starts.** SitRep measured 42 s to wake on Render's free tier, which is why the monitor
-exists. Footnote also loads the index at startup; measure the full cold start in Phase 2 and
-record the number here.
+exists. Footnote measured 32 s (one `/healthz` request after 20 idle minutes, U10). Loading and
+verifying the index took 8.3 ms of that wake on Render, so the wait is Render's, not the index's.
 
 **The monitor's second job** is the same as SitRep's: the daily cap, the IP limit and any cache
 live in process memory, and a sleeping service is a stopped process. The Console's monthly
