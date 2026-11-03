@@ -16,5 +16,9 @@
   "embedding": {
     "model": "voyage-4",
     "dimension": 1024
+  },
+  "outputs": {
+    "chunks.jsonl": "9ff0efa5446ba18d98b1465f0d08004fb363e1be472b5e45a9e1e0f2f0adff3f",
+    "embeddings.npy": "076da468dab67e494fbd73ed3cd8b49f5b3aaef68af26fc2255f2fdf6be1ad43"
   }
 }

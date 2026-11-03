@@ -4,7 +4,9 @@ Writes three files to `index/`, all committed:
 
     chunks.jsonl     one Chunk per line, in `chunk_corpus` order
     embeddings.npy   float32, row i is the vector for line i of chunks.jsonl
-    manifest.json    what the index was built from (`app.index.build_manifest`)
+    manifest.json    what the index was built from (`app.index.build_manifest`),
+                     plus the receipt: the sha256 of the other two files.
+                     Written last, so it describes the files as written.
 
 BM25 statistics join these in U12.
 
@@ -22,7 +24,7 @@ import numpy as np
 from app.chunker import chunk_corpus
 from app.config import get_settings
 from app.embed import embed
-from app.index import CORPUS_DIR, INDEX_DIR, build_manifest
+from app.index import CORPUS_DIR, INDEX_DIR, build_manifest, receipt
 from app.logs import configure_logging
 
 # Voyage's limit on inputs per request. A chunk is at most max_chunk_words
@@ -56,7 +58,8 @@ async def main() -> int:
     lines = "".join(chunk.model_dump_json() + "\n" for chunk in chunks)
     (INDEX_DIR / "chunks.jsonl").write_text(lines, encoding="utf-8")
     np.save(INDEX_DIR / "embeddings.npy", embeddings)
-    manifest = json.dumps(build_manifest(CORPUS_DIR, settings), indent=2) + "\n"
+    manifest = build_manifest(CORPUS_DIR, settings) | {"outputs": receipt(INDEX_DIR)}
+    manifest = json.dumps(manifest, indent=2) + "\n"
     (INDEX_DIR / "manifest.json").write_text(manifest, encoding="utf-8")
 
     print(f"wrote {len(chunks)} chunks, embeddings {embeddings.shape} {embeddings.dtype}")
