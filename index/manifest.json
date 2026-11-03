@@ -1,0 +1,20 @@
+{
+  "corpus": {
+    "away-travel-2026-27.md": "5edfc17d10f2b4307cc23dc6335f3781aa7ced4c9893169d72617340e86432d9",
+    "code-of-conduct-2025-26.md": "f1f39b5c97c9fe4e4489dd64382642909de5c742033737e90c9ec9fd793e0ff0",
+    "code-of-conduct-2026-27.md": "d73bc422df241b4e3ade7e08593605cc18239f489ec05d87cfb9f77be6da8e68",
+    "matchday-ops-2025-26.md": "ca4fae06bf1ecac0febe5b59a935cd9867f6683a35832a4632b0182620c070ba",
+    "matchday-ops-2026-27.md": "e4a458e99def73ce18a58dfe1d71d17dee0173e947aa870e19692d4137ca6073",
+    "media-policy-2026-27.md": "776c4e7e1351673fdb610e6a3449002cb7f839beac46cc6c45fbaf50920bc28a",
+    "set-piece-playbook-2026-27.md": "905635d8d4b934d91f908680f0589cea8b797029b0ea2a5a0626ffd4a9342106",
+    "training-ground-rules-2026-27.md": "c9265e8f7ca89fa4dd1f72c141acf2ac4fcec329cdae933da97c6612768cb4e1"
+  },
+  "chunker": {
+    "max_chunk_words": 200,
+    "current_edition": "2026-27"
+  },
+  "embedding": {
+    "model": "voyage-4",
+    "dimension": 1024
+  }
+}

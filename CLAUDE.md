@@ -117,6 +117,9 @@ startup in under one second. If any committed index file exceeds 20 MB, stop and
 - Model pinned in `config.py`, never at call sites. Default `voyage-4`. Verify the current
   model list and endpoint at https://docs.voyageai.com before Phase 2.
 - `input_type` is `document` for chunks and `query` for questions; mixing them degrades recall.
+- A payment method must be on file in Voyage's dashboard. Without one, limits drop to 3 RPM
+  and 10K TPM: the handbook can't be embedded in one request, and the demo's fourth question
+  in a minute degrades to `keyword_only`.
 - Not a local embedding model: loading one risks Render's 512 MB limit and adds a heavy
   dependency, to save calls that cost a fraction of a cent.
 

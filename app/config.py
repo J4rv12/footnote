@@ -55,8 +55,8 @@ class Settings(BaseSettings):
     voyage_output_dimension: int = Field(default=1024, gt=0)
     # Measured in U08 from a laptop: one-question calls took 0.5 to 1.4 s, and
     # the first call of the session 4.9 s. Twice the slowest. Past this, /ask
-    # is better served by keyword search than by waiting. U09 measures a full
-    # batch of chunks against it.
+    # is better served by keyword search than by waiting. U09: all 167 handbook
+    # chunks in one call took 3.4 s.
     voyage_timeout_seconds: float = Field(default=10.0, gt=0)
 
     # --- Chunking (U06). Changing either changes every chunk, so the index

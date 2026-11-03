@@ -1,4 +1,4 @@
-.PHONY: setup run test lint
+.PHONY: setup run test lint index
 
 PY := .venv/bin/python
 
@@ -15,3 +15,7 @@ test:
 lint:
 	$(PY) -m ruff check .
 	$(PY) -m ruff format --check .
+
+# Billed: one Voyage call per 1,000 chunks. Commit everything it writes.
+index:
+	$(PY) -m scripts.build_index
